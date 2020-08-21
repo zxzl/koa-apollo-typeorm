@@ -14,7 +14,9 @@ router.get("/", async (ctx) => {
 
 router.get("/:id", async (ctx) => {
   const userRepository = getRepository(User);
-  const results = await userRepository.findOne(ctx.params.id);
+  const results = await userRepository.findOne(ctx.params.id, {
+    relations: ["photos"],
+  });
   ctx.body = results;
 });
 
