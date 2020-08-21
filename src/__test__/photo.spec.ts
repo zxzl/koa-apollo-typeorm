@@ -1,8 +1,9 @@
 import { createApp } from "../app";
 import { createConnection, getConnection, getRepository } from "typeorm";
-import { createFakeUser, User } from "../entities/user.entity";
-import { Photo, createFakePhoto } from "../entities/photo.entity";
+import { User } from "../entities/user.entity";
+import { Photo } from "../entities/photo.entity";
 import { testConnection } from "../db/connections";
+import { createFakeUser, createFakePhoto } from "../utils/faker";
 
 describe("/api/users/:id with photos", () => {
   let request;
@@ -20,11 +21,11 @@ describe("/api/users/:id with photos", () => {
       const photoRepository = getRepository(Photo);
       const userRepository = getRepository(User);
 
-      const user = await userRepository.create(createFakeUser());
+      const user = userRepository.create(createFakeUser());
       await userRepository.save(user);
       const userId = user.id;
 
-      const photo = await photoRepository.create(createFakePhoto());
+      const photo = photoRepository.create(createFakePhoto());
       photo.user = user;
       await photoRepository.save(photo);
 

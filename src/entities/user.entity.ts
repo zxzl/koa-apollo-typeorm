@@ -7,7 +7,6 @@ import {
   OneToMany,
 } from "typeorm";
 import { IsEmail, validateOrReject } from "class-validator";
-import * as faker from "faker";
 import { Photo } from "./photo.entity";
 
 @Entity()
@@ -36,11 +35,3 @@ export class User {
   @OneToMany((type) => Photo, (photo) => photo.user)
   photos: Photo[];
 }
-
-export const createFakeUser = () => {
-  return {
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    email: faker.internet.email(),
-  };
-};
