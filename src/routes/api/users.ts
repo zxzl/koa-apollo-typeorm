@@ -2,7 +2,7 @@ import * as Router from "koa-router";
 
 import { getRepository } from "typeorm";
 
-import { User } from "../entity/user";
+import { User } from "../../entity/user";
 
 const router = new Router();
 

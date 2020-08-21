@@ -1,8 +1,5 @@
-// const request = require("supertest");
-// const app = require("../index");
-
 import { createApp } from "../app";
-import { createConnection, getConnection, Server } from "typeorm";
+import { createConnection, getConnection } from "typeorm";
 import * as faker from "faker";
 
 const createUser = () => {
@@ -13,7 +10,7 @@ const createUser = () => {
   };
 };
 
-describe("/users CRUD", () => {
+describe("/api/users CRUD", () => {
   let request;
   let server;
 
@@ -31,43 +28,43 @@ describe("/users CRUD", () => {
   });
 
   it("should return no users at the beginning", async () => {
-    const resp = await request.get("/users");
+    const resp = await request.get("/api/users");
     expect(resp.body).toHaveLength(0);
   });
 
   describe("", () => {
     beforeAll(async () => {
       await request
-        .post("/users")
+        .post("/api/users")
         .send(createUser())
         .set("Accept", "application/json");
       await request
-        .post("/users")
+        .post("/api/users")
         .send(createUser())
         .set("Accept", "application/json");
     });
 
     it("should list users", async () => {
-      const resp = await request.get("/users");
+      const resp = await request.get("/api/users");
       expect(resp.body).toHaveLength(2);
     });
 
     it("should provide user by id", async () => {
-      const resp = await request.get("/users");
+      const resp = await request.get("/api/users");
       const user0 = resp.body[0];
       const id = user0.id;
 
-      const userListResp = await request.get(`/users/${id}`);
+      const userListResp = await request.get(`/api/users/${id}`);
       expect(userListResp.body).toMatchObject(user0);
     });
 
     it("should delete user by id", async () => {
-      const resp = await request.get("/users");
+      const resp = await request.get("/api/users");
       const user0 = resp.body[0];
       const id = user0.id;
 
-      await request.delete(`/users/${id}`);
-      const resp2 = await request.get("/users");
+      await request.delete(`/api/users/${id}`);
+      const resp2 = await request.get("/api/users");
       expect(resp2.body).toHaveLength(1);
     });
 
@@ -75,7 +72,7 @@ describe("/users CRUD", () => {
       const mockUser = createUser();
       mockUser.email = "hi";
       const resp = await request
-        .post("/users")
+        .post("/api/users")
         .send(mockUser)
         .set("Accept", "application/json");
       expect(resp.status).toBeGreaterThanOrEqual(400);
