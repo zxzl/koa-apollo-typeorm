@@ -2,19 +2,14 @@ import { createApp } from "../app";
 import { createConnection, getConnection, getRepository } from "typeorm";
 import { createFakeUser, User } from "../entities/user.entity";
 import { Photo, createFakePhoto } from "../entities/photo.entity";
+import { testConnection } from "../db/connections";
 
 describe("/api/users CRUD", () => {
   let request;
   let server;
 
   beforeAll(async () => {
-    await createConnection({
-      type: "sqlite",
-      database: ":memory:",
-      entities: ["src/entities/**/*.entity.ts"],
-      dropSchema: true,
-      synchronize: true,
-    });
+    await createConnection(testConnection);
     const app = createApp();
     server = app.listen();
     request = require("supertest").agent(server);
