@@ -7,8 +7,15 @@ export const createFakeUser = () => {
     email: faker.internet.email(),
   };
 };
+
 export const createFakePhoto = () => {
   return {
     url: faker.image.image(),
+  };
+};
+
+export const createFakePost = () => {
+  return {
+    body: faker.lorem.sentences(),
   };
 };

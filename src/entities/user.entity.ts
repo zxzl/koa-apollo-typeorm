@@ -8,10 +8,11 @@ import {
 } from "typeorm";
 import { IsEmail, validateOrReject } from "class-validator";
 import { Photo } from "./photo.entity";
+import { Post } from "./post.entity";
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id: number;
 
   @Column()
@@ -29,9 +30,10 @@ export class User {
   async validate(): Promise<void> {
     await validateOrReject(this);
   }
+
   /**
    * Relations
    */
-  @OneToMany((type) => Photo, (photo) => photo.user)
-  photos: Photo[];
+  @OneToMany((type) => Post, (post) => post.author)
+  posts: Post[];
 }
