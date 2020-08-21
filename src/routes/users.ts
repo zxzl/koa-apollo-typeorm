@@ -1,49 +1,51 @@
-import * as express from "express";
-import { Request, Response } from "express";
+import * as Router from "koa-router";
+
 import { getRepository } from "typeorm";
 
 import { User } from "../entity/user";
 
-const router = express.Router();
+const router = new Router();
 
-router.get("/", async function (req: Request, res: Response) {
+router.get("/", async (ctx) => {
   const userRepository = getRepository(User);
   const users = await userRepository.find();
-  res.json(users);
+  ctx.body = users;
 });
 
-router.get("/:id", async function (req: Request, res: Response) {
+router.get("/:id", async (ctx) => {
   const userRepository = getRepository(User);
-  const results = await userRepository.findOne(req.params.id);
-  return res.send(results);
+  const results = await userRepository.findOne(ctx.params.id);
+  ctx.body = results;
 });
 
-router.post("/", async function (req: Request, res: Response) {
+router.post("/", async (ctx) => {
   const userRepository = getRepository(User);
   try {
-    const user = await userRepository.create(req.body);
+    //@ts-ignore
+    const user = await userRepository.create(ctx.request.body);
     const results = await userRepository.save(user);
-    return res.send(results);
+    ctx.body = results;
   } catch (e) {
-    res.status(400);
-    return res.send(e);
+    ctx.status = 400;
+    ctx.body = e;
   }
 });
 
-router.put("/:id", async function (req: Request, res: Response) {
+router.put("/:id", async (ctx) => {
   const userRepository = getRepository(User);
 
-  const user = await userRepository.findOne(req.params.id);
-  userRepository.merge(user, req.body);
+  const user = await userRepository.findOne(ctx.params.id);
+  //@ts-ignore
+  userRepository.merge(user, ctx.request.body);
   const results = await getRepository(User).save(user);
-  return res.send(results);
+  ctx.body = results;
 });
 
-router.delete("/:id", async function (req: Request, res: Response) {
+router.delete("/:id", async (ctx) => {
   const userRepository = getRepository(User);
 
-  const results = await userRepository.delete(req.params.id);
-  return res.send(results);
+  const results = await userRepository.delete(ctx.params.id);
+  ctx.body = results;
 });
 
 export default router;
