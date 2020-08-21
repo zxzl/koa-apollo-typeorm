@@ -1,14 +1,6 @@
 import { createApp } from "../app";
 import { createConnection, getConnection } from "typeorm";
-import * as faker from "faker";
-
-const createUser = () => {
-  return {
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    email: faker.internet.email(),
-  };
-};
+import { createFakeUser } from "../entities/user.entity";
 
 describe("/api/users CRUD", () => {
   let request;
@@ -18,7 +10,7 @@ describe("/api/users CRUD", () => {
     await createConnection({
       type: "sqlite",
       database: ":memory:",
-      entities: ["src/entity/*.ts"],
+      entities: ["src/entities/**/*.entity.ts"],
       dropSchema: true,
       synchronize: true,
     });
@@ -36,11 +28,11 @@ describe("/api/users CRUD", () => {
     beforeAll(async () => {
       await request
         .post("/api/users")
-        .send(createUser())
+        .send(createFakeUser())
         .set("Accept", "application/json");
       await request
         .post("/api/users")
-        .send(createUser())
+        .send(createFakeUser())
         .set("Accept", "application/json");
     });
 
@@ -69,7 +61,7 @@ describe("/api/users CRUD", () => {
     });
 
     it("should negate new user without invalid email", async () => {
-      const mockUser = createUser();
+      const mockUser = createFakeUser();
       mockUser.email = "hi";
       const resp = await request
         .post("/api/users")
