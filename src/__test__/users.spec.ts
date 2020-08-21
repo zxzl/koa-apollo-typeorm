@@ -2,8 +2,7 @@
 // const app = require("../index");
 
 import { createApp } from "../app";
-import { createConnection, getConnection } from "typeorm";
-import * as request from "supertest";
+import { createConnection, getConnection, Server } from "typeorm";
 import * as faker from "faker";
 
 const createUser = () => {
@@ -14,8 +13,9 @@ const createUser = () => {
   };
 };
 
-describe("app test", () => {
-  let app;
+describe("/users CRUD", () => {
+  let request;
+  let server;
 
   beforeAll(async () => {
     await createConnection({
@@ -25,54 +25,56 @@ describe("app test", () => {
       dropSchema: true,
       synchronize: true,
     });
-    app = createApp();
+    const app = createApp();
+    server = app.listen();
+    request = require("supertest").agent(server);
   });
 
   it("should return no users at the beginning", async () => {
-    const resp = await request(app).get("/users");
+    const resp = await request.get("/users");
     expect(resp.body).toHaveLength(0);
   });
 
-  describe("handle data", () => {
+  describe("", () => {
     beforeAll(async () => {
-      await request(app)
+      await request
         .post("/users")
         .send(createUser())
         .set("Accept", "application/json");
-      await request(app)
+      await request
         .post("/users")
         .send(createUser())
         .set("Accept", "application/json");
     });
 
     it("should list users", async () => {
-      const resp = await request(app).get("/users");
+      const resp = await request.get("/users");
       expect(resp.body).toHaveLength(2);
     });
 
     it("should provide user by id", async () => {
-      const resp = await request(app).get("/users");
+      const resp = await request.get("/users");
       const user0 = resp.body[0];
       const id = user0.id;
 
-      const userListResp = await request(app).get(`/users/${id}`);
+      const userListResp = await request.get(`/users/${id}`);
       expect(userListResp.body).toMatchObject(user0);
     });
 
     it("should delete user by id", async () => {
-      const resp = await request(app).get("/users");
+      const resp = await request.get("/users");
       const user0 = resp.body[0];
       const id = user0.id;
 
-      await request(app).delete(`/users/${id}`);
-      const resp2 = await request(app).get("/users");
+      await request.delete(`/users/${id}`);
+      const resp2 = await request.get("/users");
       expect(resp2.body).toHaveLength(1);
     });
 
     it("should negate new user without invalid email", async () => {
       const mockUser = createUser();
       mockUser.email = "hi";
-      const resp = await request(app)
+      const resp = await request
         .post("/users")
         .send(mockUser)
         .set("Accept", "application/json");
@@ -80,5 +82,8 @@ describe("app test", () => {
     });
   });
 
-  afterAll(async () => await getConnection().close());
+  afterAll(async () => {
+    await getConnection().close();
+    server.close();
+  });
 });
