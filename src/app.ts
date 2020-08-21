@@ -1,8 +1,8 @@
-const Koa = require("koa");
-var bodyParser = require("koa-bodyparser");
+import * as Koa from "koa";
+import * as bodyParser from "koa-bodyparser";
 
 import users from "./routes/users";
-import Router = require("koa-router");
+import * as Router from "koa-router";
 
 export const createApp = () => {
   const app = new Koa();
