@@ -1,11 +1,11 @@
 import { createApp } from "../app";
 import { createConnection, getConnection, getRepository } from "typeorm";
 import { User } from "../entities/user.entity";
-import { Photo } from "../entities/photo.entity";
 import { testConnection } from "../db/connections";
-import { createFakeUser, createFakePhoto } from "../utils/faker";
+import { createFakeUser, createFakePost } from "../utils/faker";
+import { Post } from "../entities/post.entity";
 
-describe("/api/users/:id with photos", () => {
+describe("/api/users/:id/posts", () => {
   let request;
   let server;
 
@@ -16,22 +16,23 @@ describe("/api/users/:id with photos", () => {
     request = require("supertest").agent(server);
   });
 
-  describe("With photo", () => {
-    it("should provide users photo as well", async () => {
-      const photoRepository = getRepository(Photo);
+  describe("With post", () => {
+    it("should provide users their posts as well", async () => {
       const userRepository = getRepository(User);
 
       const user = userRepository.create(createFakeUser());
       await userRepository.save(user);
       const userId = user.id;
+      const postRepository = getRepository(Post);
 
-      const photo = photoRepository.create(createFakePhoto());
-      photo.user = user;
-      await photoRepository.save(photo);
+      const post = postRepository.create(createFakePost());
+      post.author = user;
+      await postRepository.save(post);
 
-      const userResponse = await request.get(`/api/users/${userId}`);
-      expect(userResponse.body.photos).toHaveLength(1);
-      expect(userResponse.body.photos[0].id).toBe(photo.id);
+      const userResponse = await request.get(`/api/users/${userId}/posts`);
+      expect(userResponse.body).toHaveLength(1);
+      expect(userResponse.body[0].id).toBe(post.id);
+      expect(userResponse.body[0].likes).toBe(0);
     });
   });
 

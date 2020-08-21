@@ -1,9 +1,7 @@
 import { createApp } from "../app";
-import { createConnection, getConnection, getRepository } from "typeorm";
-import { User } from "../entities/user.entity";
-import { Photo } from "../entities/photo.entity";
+import { createConnection, getConnection } from "typeorm";
 import { testConnection } from "../db/connections";
-import { createFakeUser, createFakePhoto } from "../utils/faker";
+import { createFakeUser } from "../utils/faker";
 
 describe("/api/users CRUD", () => {
   let request;
@@ -65,23 +63,6 @@ describe("/api/users CRUD", () => {
         .send(mockUser)
         .set("Accept", "application/json");
       expect(resp.status).toBeGreaterThanOrEqual(400);
-    });
-
-    describe("With photo", () => {
-      it("should provide users photo as well", async () => {
-        const resp = await request.get("/api/users");
-        const user0 = resp.body[0];
-        const id = user0.id;
-
-        const photoRepository = getRepository(Photo);
-        const userRepository = getRepository(User);
-        const photo = photoRepository.create(createFakePhoto());
-        photo.user = await userRepository.findOne(id);
-        await photoRepository.save(photo);
-
-        const resp2 = await request.get(`/api/users/${id}`);
-        expect(resp2.body.photos).toHaveLength(1);
-      });
     });
   });
 

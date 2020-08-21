@@ -7,7 +7,6 @@ import {
   OneToMany,
 } from "typeorm";
 import { IsEmail, validateOrReject } from "class-validator";
-import { Photo } from "./photo.entity";
 import { Post } from "./post.entity";
 
 @Entity()

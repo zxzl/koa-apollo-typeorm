@@ -3,8 +3,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
   ManyToMany,
   JoinTable,
   OneToMany,
@@ -19,12 +17,6 @@ export class Post {
 
   @Column("varchar", { length: 2000 })
   body: string;
-
-  @CreateDateColumn({ type: "timestamp" })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: "timestamp" })
-  updatedAt: Date;
 
   /**
    * Relations
