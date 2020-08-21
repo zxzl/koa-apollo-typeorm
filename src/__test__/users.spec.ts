@@ -32,7 +32,7 @@ describe("/api/users CRUD", () => {
     expect(resp.body).toHaveLength(0);
   });
 
-  describe("", () => {
+  describe("With some users", () => {
     beforeAll(async () => {
       await request
         .post("/api/users")
