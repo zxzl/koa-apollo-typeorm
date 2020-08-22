@@ -23,11 +23,12 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    like(userId: ID!, postId: ID!): LikeUpdateResponse!
-    unlike(userId: ID!, postId: ID!): LikeUpdateResponse!
+    likePost(userId: ID!, postId: ID!): LikeUpdateResponse!
+    unlikePost(userId: ID!, postId: ID!): LikeUpdateResponse!
   }
 
   type LikeUpdateResponse {
     success: Boolean!
+    postLikes: Int
   }
 `;

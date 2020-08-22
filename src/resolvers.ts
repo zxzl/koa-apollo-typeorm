@@ -28,23 +28,28 @@ export const resolvers = {
   },
 
   Mutation: {
-    like: async (_, { userId, postId }) => {
+    likePost: async (_, { userId, postId }) => {
       const like = getRepository(PostLikesUser).create({
         userId,
         postId,
       });
       await getRepository(PostLikesUser).save(like);
+
+      const { count } = await likesLoader.load(postId);
       return {
         success: true,
+        postLikes: count,
       };
     },
-    unlike: async (_, { userId, postId }) => {
+    unlikePost: async (_, { userId, postId }) => {
       await getRepository(PostLikesUser).remove({
         postId,
         userId,
       });
+      const { count } = await likesLoader.load(postId);
       return {
         success: true,
+        postLikes: count,
       };
     },
   },
