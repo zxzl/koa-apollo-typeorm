@@ -8,19 +8,21 @@ import {
 } from "../utils/faker";
 import { Post } from "../entities/post.entity";
 import * as _ from "lodash";
+import { PostLikesUser } from "../entities/postLikeUser.entity";
 
 createConnection().then(async () => {
   const userRepository = getRepository(User);
   const photoRepository = getRepository(Photo);
   const postRepository = getRepository(Post);
+  const postLikesUserRepository = getRepository(PostLikesUser);
 
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < 10000; i++) {
     i % 100 === 0 && console.log(`${i}th user`);
 
     const user = userRepository.create(createFakeUser());
     await userRepository.save(user);
 
-    const posts = new Array(10).fill(0).map(() => {
+    const posts = new Array(20).fill(0).map(() => {
       const post = postRepository.create(createFakePost());
       post.author = user;
       return post;
@@ -50,19 +52,34 @@ createConnection().then(async () => {
   const users = await userRepository.find();
   const posts = await postRepository.find();
 
-  for (let i = 0; i < 200000; i++) {
-    i % 500 === 0 && console.log(`${i}th like`);
+  let likes = [];
+
+  for (let i = 0; i < 2000000; i++) {
     const user = _.sample(users);
     const post = _.sample(posts);
 
-    try {
-      await getConnection()
-        .createQueryBuilder()
-        .relation(Post, "likes")
-        .of(post)
-        .add(user);
-    } catch {
-      // in case of duplication
+    likes.push(
+      postLikesUserRepository.create({
+        postId: post.id,
+        userId: user.id,
+      })
+    );
+
+    if (i % 500 === 0) {
+      console.log(`${i}th like`);
+
+      try {
+        await postLikesUserRepository
+          .createQueryBuilder()
+          .insert()
+          .into(PostLikesUser)
+          .values(likes)
+          .execute();
+      } catch {
+        // handle error from duplicate entry
+      }
+
+      likes = [];
     }
   }
 

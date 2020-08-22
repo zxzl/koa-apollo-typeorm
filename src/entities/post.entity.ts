@@ -3,8 +3,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  ManyToMany,
-  JoinTable,
   OneToMany,
   getManager,
 } from "typeorm";
@@ -13,7 +11,7 @@ import { Photo } from "./photo.entity";
 
 @Entity()
 export class Post {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column("varchar", { length: 2000 })
@@ -24,10 +22,6 @@ export class Post {
    */
   @ManyToOne((type) => User, (user) => user.posts, { nullable: false })
   author: User;
-
-  @ManyToMany((type) => User)
-  @JoinTable()
-  likes: User[];
 
   @OneToMany((type) => Photo, (photo) => photo.post)
   photos: Photo[];
