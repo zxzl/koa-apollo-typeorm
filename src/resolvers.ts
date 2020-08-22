@@ -1,17 +1,11 @@
 import { getRepository } from "typeorm";
 import { Post } from "./entities/post.entity";
-import { PostLikesUser } from "./entities/postLikeUser.entity";
+import { likesLoader } from "./dataloader";
 
 export const resolvers = {
   Query: {
-    posts: async () => {
-      const limit = 10;
-      const postRepository = getRepository(Post);
-      const posts = await postRepository
-        .createQueryBuilder("post")
-        .take(limit)
-        .getMany();
-
+    posts: async (_, { pageSize = 10, skip = 0 }) => {
+      const posts = await Post.getPosts(pageSize, skip);
       return posts;
     },
 
@@ -23,13 +17,11 @@ export const resolvers = {
       return post;
     },
   },
+
   Post: {
     likes: async (post) => {
-      const likes = await PostLikesUser.findLikesByPostIds([post.id]);
-      if (Array.isArray(likes) && likes.length > 0) {
-        return likes[0].count;
-      }
-      return 0;
+      const likes = await likesLoader.load(post.id);
+      return likes.count;
     },
   },
 };
