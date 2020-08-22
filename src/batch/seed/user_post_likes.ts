@@ -1,18 +1,12 @@
 import { createConnection, getRepository, getConnection } from "typeorm";
-import { User } from "../entities/user.entity";
-import { Photo } from "../entities/photo.entity";
-import {
-  createFakeUser,
-  createFakePhoto,
-  createFakePost,
-} from "../utils/faker";
-import { Post } from "../entities/post.entity";
+import { User } from "../../entities/user.entity";
+import { createFakeUser, createFakePost } from "../../utils/faker";
+import { Post } from "../../entities/post.entity";
 import * as _ from "lodash";
-import { PostLikesUser } from "../entities/postLikeUser.entity";
+import { PostLikesUser } from "../../entities/postLikeUser.entity";
 
 createConnection().then(async () => {
   const userRepository = getRepository(User);
-  const photoRepository = getRepository(Photo);
   const postRepository = getRepository(Post);
   const postLikesUserRepository = getRepository(PostLikesUser);
 
@@ -34,18 +28,6 @@ createConnection().then(async () => {
       .into(Post)
       .values(posts)
       .execute();
-
-    // for (let k = 0; k < 10; k++) {
-    //   const post = postRepository.create(createFakePost());
-    //   post.author = user;
-    //   await postRepository.save(post);
-
-    //   // for (let j = 0; j < 3; j++) {
-    //   //   const photo = photoRepository.create(createFakePhoto());
-    //   //   photo.post = post;
-    //   //   await photoRepository.save(photo);
-    //   // }
-    // }
   }
 
   // like
