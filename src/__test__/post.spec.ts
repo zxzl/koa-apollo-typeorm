@@ -32,7 +32,6 @@ describe("/api/users/:id/posts", () => {
       const userResponse = await request.get(`/api/users/${userId}/posts`);
       expect(userResponse.body).toHaveLength(1);
       expect(userResponse.body[0].id).toBe(post.id);
-      expect(userResponse.body[0].likes).toBe(0);
     });
   });
 

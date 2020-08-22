@@ -8,16 +8,16 @@ import api from "./routes/api";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./typeDefs";
 
+export const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+
 export const createApp = () => {
   const app = new Koa();
 
   const router = new Router();
   router.use("/api", api.routes());
-
-  const apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
-  });
 
   app
     .use(bodyParser())
