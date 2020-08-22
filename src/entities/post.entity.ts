@@ -31,31 +31,17 @@ export class Post {
   /**
    * Methods
    */
-  static findPostsByAuthorId = async (authorId: string) => {
+  static getPostsByAuthorId = async (authorId: string) => {
     const manager = getManager();
 
     const posts = await manager.query(
-      `SELECT id, body
+      `SELECT id, body, authorId
       FROM post
       WHERE authorId = '${authorId}'
       `
     );
 
-    const ids = posts.map((p) => `'${p.id}'`).join(",");
-    const likes = await manager.query(
-      `SELECT postId, count(*) AS count
-      FROM post_likes_user
-      WHERE postId IN (${ids})
-      GROUP BY postId
-      `
-    );
-
-    const postsWithLikes = posts.map((p) => ({
-      ...p,
-      likes: likes.find((l) => l.postId === p.id)?.count || 0,
-    }));
-
-    return postsWithLikes;
+    return posts;
   };
 
   static getPosts = async (limit: number, skip: number) => {

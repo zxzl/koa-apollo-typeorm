@@ -3,6 +3,7 @@ const { gql } = require("apollo-server-koa");
 export const typeDefs = gql`
   type Post {
     id: Int!
+    authorId: Int!
     body: String
     likes: Int
   }
@@ -17,5 +18,7 @@ export const typeDefs = gql`
   type Query {
     posts(pageSize: Int, skip: Int): [Post]
     post(id: ID!): Post
+    postsByAuthor(authorId: Int!): [Post]
+    user(id: ID!): User
   }
 `;

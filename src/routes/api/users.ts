@@ -21,7 +21,7 @@ router.get("/:id", async (ctx) => {
 
 router.get("/:id/posts", async (ctx) => {
   const { id } = ctx.params;
-  const postsWithLikes = await Post.findPostsByAuthorId(id);
+  const postsWithLikes = await Post.getPostsByAuthorId(id);
   ctx.body = postsWithLikes;
 });
 

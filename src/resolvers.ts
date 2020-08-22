@@ -1,6 +1,7 @@
 import { getRepository } from "typeorm";
 import { Post } from "./entities/post.entity";
 import { likesLoader } from "./dataloader";
+import { User } from "./entities/user.entity";
 
 export const resolvers = {
   Query: {
@@ -11,10 +12,18 @@ export const resolvers = {
 
     post: async (_, { id }) => {
       const postRepository = getRepository(Post);
-
       const post = await postRepository.findOne(id);
-
       return post;
+    },
+
+    postsByAuthor: async (_, { authorId }) => {
+      const posts = await Post.getPostsByAuthorId(authorId);
+      return posts;
+    },
+
+    user: async (_, { id }) => {
+      const user = await getRepository(User).findOne(id);
+      return user;
     },
   },
 
