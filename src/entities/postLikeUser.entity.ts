@@ -11,7 +11,9 @@ export class PostLikesUser {
   /**
    * Methods
    */
-  static findLikesByPostIds = async (postIds: string[]) => {
+  static findLikesByPostIds = async (
+    postIds: string[]
+  ): Promise<[{ postId: string; count: number }]> => {
     const manager = getManager();
 
     const joindPostIds = postIds.join(",");

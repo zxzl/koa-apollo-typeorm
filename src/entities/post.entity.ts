@@ -20,7 +20,9 @@ export class Post {
   /**
    * Relations
    */
-  @ManyToOne((type) => User, (user) => user.posts, { nullable: false })
+  @ManyToOne((type) => User, (user) => user.posts, {
+    nullable: false,
+  })
   author: User;
 
   @OneToMany((type) => Photo, (photo) => photo.post)
@@ -54,5 +56,20 @@ export class Post {
     }));
 
     return postsWithLikes;
+  };
+
+  static getPosts = async (limit: number, skip: number) => {
+    const manager = getManager();
+
+    const posts = await manager.query(
+      `SELECT id, body, authorId
+      FROM post
+      ORDER BY id DESC
+      LIMIT ${limit}
+      OFFSET ${skip}
+      `
+    );
+
+    return posts;
   };
 }
