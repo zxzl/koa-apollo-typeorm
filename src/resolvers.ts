@@ -1,23 +1,23 @@
-import { getRepository, AdvancedConsoleLogger } from "typeorm";
-import { Post } from "./entities/post.entity";
-import { likesLoader } from "./dataloader";
+import { getRepository } from "typeorm";
 import { User } from "./entities/user.entity";
 import { PostLikesUser } from "./entities/postLikeUser.entity";
+
+import PostRepository from "./repositories/post";
 
 export const resolvers = {
   Query: {
     posts: async (_, { pageSize = 10, skip = 0 }) => {
-      const posts = await Post.getPosts(pageSize, skip);
+      const posts = await PostRepository.getPosts(pageSize, skip);
       return posts;
     },
 
     post: async (_, { id }) => {
-      const post = await getRepository(Post).findOne(id);
+      const post = await PostRepository.getPost(id);
       return post;
     },
 
     postsByAuthor: async (_, { authorId }) => {
-      const posts = await Post.getPostsByAuthorId(authorId);
+      const posts = await PostRepository.getPostsByAuthorId(authorId);
       return posts;
     },
 
@@ -35,7 +35,7 @@ export const resolvers = {
       });
       await getRepository(PostLikesUser).save(like);
 
-      const { count } = await likesLoader.load(postId);
+      const count = await PostRepository.getLike(postId);
       return {
         success: true,
         postLikes: count,
@@ -46,7 +46,7 @@ export const resolvers = {
         postId,
         userId,
       });
-      const { count } = await likesLoader.load(postId);
+      const count = await PostRepository.getLike(postId);
       return {
         success: true,
         postLikes: count,
@@ -56,8 +56,8 @@ export const resolvers = {
 
   Post: {
     likes: async (post) => {
-      const likes = await likesLoader.load(post.id);
-      return likes.count;
+      const likes = await PostRepository.getLike(post.id);
+      return likes;
     },
   },
 };
