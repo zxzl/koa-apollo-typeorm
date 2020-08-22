@@ -1,6 +1,6 @@
 import { createConnection, getRepository, getConnection } from "typeorm";
 import { User } from "../../entities/user.entity";
-import { createFakeUser, createFakePost } from "../../utils/faker";
+import { createFakeUser, createFakePost } from "../../entities/_faker";
 import { Post } from "../../entities/post.entity";
 import * as _ from "lodash";
 import { PostLikesUser } from "../../entities/postLikeUser.entity";

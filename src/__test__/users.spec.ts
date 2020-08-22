@@ -1,7 +1,7 @@
 import { createApp } from "../app";
 import { createConnection, getConnection } from "typeorm";
-import { testConnection } from "../db/connections";
-import { createFakeUser } from "../utils/faker";
+import { testConnection } from "../connections";
+import { createFakeUser } from "../entities/_faker";
 
 describe("/api/users CRUD", () => {
   let request;

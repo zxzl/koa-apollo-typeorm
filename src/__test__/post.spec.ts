@@ -1,8 +1,8 @@
 import { createApp } from "../app";
 import { createConnection, getConnection, getRepository } from "typeorm";
 import { User } from "../entities/user.entity";
-import { testConnection } from "../db/connections";
-import { createFakeUser, createFakePost } from "../utils/faker";
+import { testConnection } from "../connections";
+import { createFakeUser, createFakePost } from "../entities/_faker";
 import { Post } from "../entities/post.entity";
 
 describe("/api/users/:id/posts", () => {

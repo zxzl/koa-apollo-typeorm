@@ -1,6 +1,6 @@
 import { createConnection, getRepository } from "typeorm";
 import { Photo } from "../../entities/photo.entity";
-import { createFakePhoto } from "../../utils/faker";
+import { createFakePhoto } from "../../entities/_faker";
 import { Post } from "../../entities/post.entity";
 import * as _ from "lodash";
 
