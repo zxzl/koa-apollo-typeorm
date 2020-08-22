@@ -1,52 +1,41 @@
-import { getRepository } from "typeorm";
-import { User } from "./entities/user.entity";
-import { PostLikesUser } from "./entities/postLikeUser.entity";
-
-import PostRepository from "./repositories/post";
+import PostService from "./servicies/post";
+import UserService from "./servicies/user";
 
 export const resolvers = {
   Query: {
     posts: async (_, { pageSize = 10, skip = 0 }) => {
-      const posts = await PostRepository.getPosts(pageSize, skip);
+      const posts = await PostService.getPosts(pageSize, skip);
       return posts;
     },
 
     post: async (_, { id }) => {
-      const post = await PostRepository.getPost(id);
+      const post = await PostService.getPost(id);
       return post;
     },
 
     postsByAuthor: async (_, { authorId }) => {
-      const posts = await PostRepository.getPostsByAuthorId(authorId);
+      const posts = await PostService.getPostsByAuthorId(authorId);
       return posts;
     },
 
     user: async (_, { id }) => {
-      const user = await getRepository(User).findOne(id);
+      const user = await UserService.getUser(id);
       return user;
     },
   },
 
   Mutation: {
     likePost: async (_, { userId, postId }) => {
-      const like = getRepository(PostLikesUser).create({
-        userId,
-        postId,
-      });
-      await getRepository(PostLikesUser).save(like);
-
-      const count = await PostRepository.getLike(postId);
+      await PostService.like(userId, postId);
+      const count = await PostService.getLike(postId);
       return {
         success: true,
         postLikes: count,
       };
     },
     unlikePost: async (_, { userId, postId }) => {
-      await getRepository(PostLikesUser).remove({
-        postId,
-        userId,
-      });
-      const count = await PostRepository.getLike(postId);
+      await PostService.unlike(userId, postId);
+      const count = await PostService.getLike(postId);
       return {
         success: true,
         postLikes: count,
@@ -56,7 +45,7 @@ export const resolvers = {
 
   Post: {
     likes: async (post) => {
-      const likes = await PostRepository.getLike(post.id);
+      const likes = await PostService.getLike(post.id);
       return likes;
     },
   },

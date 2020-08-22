@@ -1,5 +1,6 @@
 import { Post } from "../entities/post.entity";
 import { getRepository, getManager } from "typeorm";
+import { PostLikesUser } from "../entities/postLikeUser.entity";
 const DataLoader = require("dataloader");
 
 const PostRepository = {
@@ -37,6 +38,21 @@ const PostRepository = {
     );
 
     return likes;
+  },
+
+  like: async (userId, postId) => {
+    const like = getRepository(PostLikesUser).create({
+      userId,
+      postId,
+    });
+    await getRepository(PostLikesUser).save(like);
+  },
+
+  unlike: async (userId, postId) => {
+    await getRepository(PostLikesUser).remove({
+      postId,
+      userId,
+    });
   },
 };
 
