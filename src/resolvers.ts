@@ -1,7 +1,8 @@
-import { getRepository } from "typeorm";
+import { getRepository, AdvancedConsoleLogger } from "typeorm";
 import { Post } from "./entities/post.entity";
 import { likesLoader } from "./dataloader";
 import { User } from "./entities/user.entity";
+import { PostLikesUser } from "./entities/postLikeUser.entity";
 
 export const resolvers = {
   Query: {
@@ -11,8 +12,7 @@ export const resolvers = {
     },
 
     post: async (_, { id }) => {
-      const postRepository = getRepository(Post);
-      const post = await postRepository.findOne(id);
+      const post = await getRepository(Post).findOne(id);
       return post;
     },
 
@@ -24,6 +24,28 @@ export const resolvers = {
     user: async (_, { id }) => {
       const user = await getRepository(User).findOne(id);
       return user;
+    },
+  },
+
+  Mutation: {
+    like: async (_, { userId, postId }) => {
+      const like = getRepository(PostLikesUser).create({
+        userId,
+        postId,
+      });
+      await getRepository(PostLikesUser).save(like);
+      return {
+        success: true,
+      };
+    },
+    unlike: async (_, { userId, postId }) => {
+      await getRepository(PostLikesUser).remove({
+        postId,
+        userId,
+      });
+      return {
+        success: true,
+      };
     },
   },
 

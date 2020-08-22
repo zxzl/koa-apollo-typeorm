@@ -21,4 +21,13 @@ export const typeDefs = gql`
     postsByAuthor(authorId: Int!): [Post]
     user(id: ID!): User
   }
+
+  type Mutation {
+    like(userId: ID!, postId: ID!): LikeUpdateResponse!
+    unlike(userId: ID!, postId: ID!): LikeUpdateResponse!
+  }
+
+  type LikeUpdateResponse {
+    success: Boolean!
+  }
 `;
