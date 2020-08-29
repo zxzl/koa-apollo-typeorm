@@ -1,5 +1,7 @@
 # koa-apollo-typeorm
 
+![CI](https://github.com/zxzl/koa-apollo-typeorm/workflows/CI/badge.svg)
+
 ## Running test locally
 
 ```sh
