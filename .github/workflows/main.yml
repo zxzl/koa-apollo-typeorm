@@ -48,7 +48,7 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
 
-      - name: Run test
-        run: yarn test:integration
+      - name: Run server test
+        run: yarn workspace server test:integration
         env:
           MYSQL_HOST: "127.0.0.1"

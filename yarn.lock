@@ -6611,6 +6611,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"server@workspace:packages/server":
+  version: 0.0.0-use.local
+  resolution: "server@workspace:packages/server"
+  dependencies:
+    "@types/faker": ^4.1.12
+    "@types/jest": ^26.0.10
+    "@types/koa": ^2.11.4
+    "@types/koa-bodyparser": ^4.3.0
+    "@types/koa-router": ^7.4.1
+    "@types/lodash": ^4.14.159
+    apollo-server: ^2.16.1
+    apollo-server-koa: ^2.16.1
+    class-validator: ^0.12.2
+    dataloader: ^2.0.0
+    faker: ^4.1.0
+    graphql: ^15.3.0
+    jest: ^26.4.1
+    koa: ^2.13.0
+    koa-bodyparser: ^4.3.0
+    koa-router: ^9.4.0
+    lodash: ^4.17.20
+    mysql: ^2.18.1
+    reflect-metadata: ^0.1.13
+    sqlite3: ^5.0.0
+    supertest: ^4.0.2
+    ts-jest: ^26.2.0
+    ts-node: ^8.10.2
+    ts-node-dev: ^1.0.0-pre.59
+    typeorm: ^0.2.25
+    typescript: ^3.9.0
+  languageName: unknown
+  linkType: soft
+
 "set-blocking@npm:^2.0.0, set-blocking@npm:~2.0.0":
   version: 2.0.0
   resolution: "set-blocking@npm:2.0.0"
@@ -7612,33 +7645,6 @@ __metadata:
 "typeorm@workspace:.":
   version: 0.0.0-use.local
   resolution: "typeorm@workspace:."
-  dependencies:
-    "@types/faker": ^4.1.12
-    "@types/jest": ^26.0.10
-    "@types/koa": ^2.11.4
-    "@types/koa-bodyparser": ^4.3.0
-    "@types/koa-router": ^7.4.1
-    "@types/lodash": ^4.14.159
-    apollo-server: ^2.16.1
-    apollo-server-koa: ^2.16.1
-    class-validator: ^0.12.2
-    dataloader: ^2.0.0
-    faker: ^4.1.0
-    graphql: ^15.3.0
-    jest: ^26.4.1
-    koa: ^2.13.0
-    koa-bodyparser: ^4.3.0
-    koa-router: ^9.4.0
-    lodash: ^4.17.20
-    mysql: ^2.18.1
-    reflect-metadata: ^0.1.13
-    sqlite3: ^5.0.0
-    supertest: ^4.0.2
-    ts-jest: ^26.2.0
-    ts-node: ^8.10.2
-    ts-node-dev: ^1.0.0-pre.59
-    typeorm: ^0.2.25
-    typescript: ^3.9.0
   languageName: unknown
   linkType: soft
 
