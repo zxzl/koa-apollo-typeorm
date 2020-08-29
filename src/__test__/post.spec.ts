@@ -36,6 +36,7 @@ describe("/api/users/:id/posts", () => {
   });
 
   afterAll(async () => {
+    await getConnection().dropDatabase();
     await getConnection().close();
     server.close();
   });
