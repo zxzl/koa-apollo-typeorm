@@ -92,4 +92,8 @@ describe("/api/users/:id/posts", () => {
       expect(resp.postLikes).toBe(likeBefore - 1);
     });
   });
+  afterAll(async () => {
+    await getConnection().dropDatabase();
+    await getConnection().close();
+  });
 });

@@ -67,6 +67,7 @@ describe("/api/users CRUD", () => {
   });
 
   afterAll(async () => {
+    await getConnection().dropDatabase();
     await getConnection().close();
     server.close();
   });

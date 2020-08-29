@@ -18,9 +18,9 @@ const PostRepository = {
     return posts;
   },
 
-  getLike: async (id) => {
+  getLike: async (id: string): Promise<number> => {
     const likes = await likesLoader.load(id);
-    return likes.count;
+    return Number(likes.count);
   },
 
   _getLikesByPostIds: async (
